@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "949190936374",
+    "project_id": "ciie-region-6",
+    "storage_bucket": "ciie-region-6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949190936374:android:1ddf6ba2fc8e3b5a971597",
+        "android_client_info": {
+          "package_name": "com.fedegiorno.ciie_region_6"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949190936374-lt6ggknfn41p183imsmonk9u1mppmk7l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBd_APbPquMn3Cb0hOtpIk9cMu0WVs_xDw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949190936374-lt6ggknfn41p183imsmonk9u1mppmk7l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
