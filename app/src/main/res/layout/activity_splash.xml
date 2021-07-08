@@ -5,9 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cnlSplash"
+    android:background="#009688"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#009689"
     tools:context="com.fedegiorno.ciie_region_6.activities.SplashActivity">
 
     <TextView
@@ -26,14 +26,15 @@
 
     <ImageView
         android:id="@+id/imgSplash"
-        android:contentDescription="Imagen de inicio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#009688"
+        android:contentDescription="Imagen de inicio"
         android:src="@drawable/ciieregion6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ciieregion6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

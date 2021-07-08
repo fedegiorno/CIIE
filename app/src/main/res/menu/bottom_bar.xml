@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Desarrollo de Aplicaciones para Dispositivos Moviles
+TRABAJO PRACTICO FINAL
+
+bottom_bar.xml
+Ubicacion: res.menu
+
+-->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottomNavbarFragment1"
+        android:icon="@drawable/sficono2"
+        android:title="San Fernando" />
+
+    <item
+        android:id="@+id/bottomNavbarFragment2"
+        android:icon="@drawable/siicono2"
+        android:title="San Isidro" />
+
+    <item
+        android:id="@+id/bottomNavbarFragment3"
+        android:icon="@drawable/tgicono2"
+        android:title="Tigre" />
+
+    <item
+        android:id="@+id/bottomNavbarFragment4"
+        android:icon="@drawable/vlicono2"
+        android:title="Vicente Lopez" />
+
+</menu>

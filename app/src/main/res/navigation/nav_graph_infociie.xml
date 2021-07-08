@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_infociie"
+    app:startDestination="@id/bottomNavbarFragment1">
+
+    <fragment
+        android:id="@+id/bottomNavbarFragment1"
+        android:name="com.fedegiorno.ciie_region_6.fragments.BottomNavbarFragment1"
+        android:label="BottomNavbarFragment1"
+        tools:layout="@layout/fragment_bottom_navbar1"/>
+    <fragment
+        android:id="@+id/bottomNavbarFragment2"
+        android:name="com.fedegiorno.ciie_region_6.fragments.BottomNavbarFragment2"
+        android:label="BottomNavbarFragment2"
+        tools:layout="@layout/fragment_bottom_navbar2"/>
+    <fragment
+        android:id="@+id/bottomNavbarFragment3"
+        android:name="com.fedegiorno.ciie_region_6.fragments.BottomNavbarFragment3"
+        android:label="BottomNavbarFragment3"
+        tools:layout="@layout/fragment_bottom_navbar3"/>
+    <fragment
+        android:id="@+id/bottomNavbarFragment4"
+        android:name="com.fedegiorno.ciie_region_6.fragments.BottomNavbarFragment4"
+        android:label="BottomNavbarFragment4"
+        tools:layout="@layout/fragment_bottom_navbar4"/>
+</navigation>

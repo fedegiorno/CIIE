@@ -55,13 +55,6 @@ class LoginActivity : AppCompatActivity() {
         etxEmail = findViewById(R.id.etxEmail)
         etxClave = findViewById(R.id.etxClave)
         llyAutenticacion = findViewById(R.id.llyAutenticacion)
-
-        //Analytics Event
-        val analytics = FirebaseAnalytics.getInstance(this)
-        val bundle = Bundle()
-        bundle.putString("message", "Integracion de Firebase completa")
-        analytics.logEvent("InitScreen", bundle)
-
         //Setup
         setup()
         session()
@@ -180,11 +173,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun showLista(email: String, provider: ProviderType) { //En caso de autenticación favorable vamos a MainActivity
-        val MainIntent: Intent = Intent(this, MainActivity::class.java).apply {
+        val ListIntent: Intent = Intent(this, MainActivity::class.java).apply {
             putExtra("email", email)
             putExtra("provider", provider.name)
         }
-        startActivity(MainIntent)
+        startActivity(ListIntent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
