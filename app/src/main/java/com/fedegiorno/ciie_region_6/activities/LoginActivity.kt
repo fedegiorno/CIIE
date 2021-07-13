@@ -179,9 +179,9 @@ class LoginActivity : AppCompatActivity() {
         var maestro: Docente = Docente()
         var docRef = db.collection("docentes").document(email)
 
-            docRef.get()
+               docRef.get()
                 .addOnSuccessListener {dataSnapshot ->
-                    if (dataSnapshot != null) {
+                    if (dataSnapshot != null && dataSnapshot.exists()) {
                         maestro = dataSnapshot.toObject<Docente>()!!
                         Log.d("****TEST", "DocumentSnapshot data: ${maestro.toString()}")
 
@@ -213,15 +213,20 @@ class LoginActivity : AppCompatActivity() {
                                 putExtra("telefono", maestro.telefono)
                             }
                         }
-                        startActivity(authIntent)
-
-                    } else {
-                        Log.d("****TEST", "No such document")
+                    } else { //dataSnapshot = null
+                        //Docente nuevo
+                        authIntent = Intent(this, RegisterActivity::class.java).apply {
+                            putExtra("email", email)
+                            putExtra("provider", provider.name)
+                        }
                     }
+                    startActivity(authIntent)
+                    Log.d("****TEST", "No such document")
                 }
                 .addOnFailureListener { exception ->
-                        Log.d("Test", "get failed with ", exception)
+                    Log.d("Test", "get failed with ", exception)
                 }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

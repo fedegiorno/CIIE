@@ -17,8 +17,6 @@ Ubicacion: res.layout
     android:layout_height="match_parent"
     tools:context=".activities.InfoCIIEActivity">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <TextView
         android:id="@+id/txtNavBarCIIE4"
         android:layout_width="wrap_content"

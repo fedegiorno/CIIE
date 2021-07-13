@@ -20,8 +20,6 @@ Ubicacion: res.layout
     android:paddingHorizontal="10dp"
     tools:context=".fragments.DetailFragment1">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <TextView
         android:id="@+id/txtTitCapacitador"
         android:layout_width="wrap_content"
