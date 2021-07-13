@@ -1,16 +1,21 @@
 package com.fedegiorno.ciie_region_6.activities
 
+import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import com.facebook.login.LoginManager
 import com.fedegiorno.ciie_region_6.R
+import com.fedegiorno.ciie_region_6.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -22,19 +27,29 @@ enum class ProviderType {
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+
     private val db = FirebaseFirestore.getInstance()
+
+    lateinit var v: View
+
+    /* BOTTOM NAVIGATION BAR */
+    private lateinit var bottomNavViewMain : BottomNavigationView
+    private lateinit var navHostFragment : NavHostFragment
+    /* BOTTOM NAVIGATION BAR */
+
+    private lateinit var nombreCurso: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //Setup
         val bundle: Bundle? = intent.extras
+        val name: String? = bundle?.getString("name")
         val email: String? = bundle?.getString("email")
         val provider: String? = bundle?.getString("provider")
-
-//        Log.i("MIFIREBASE", "Email: $email")
-//        Log.i("MIFIREBASE", "Provider: $provider")
 
         setup(email ?: "", provider ?: "")
 
@@ -43,15 +58,17 @@ class MainActivity : AppCompatActivity() {
         prefs.putString("email", email)
         prefs.putString("provider", provider)
         prefs.apply()
+
+        nombreCurso = ""
     }
 
     private fun setup(email: String, provider: String) {
         title = "Listado de Cursos"
-
-        //Toast.makeText(this, "email: $email", Toast.LENGTH_LONG).show()
-        //Toast.makeText(this, "provider: $provider", Toast.LENGTH_LONG).show()
-
     }
+
+//    fun setNombreCurso(nombre: String){
+//        nombreCurso = nombre
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_overflow, menu)
@@ -60,18 +77,31 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
-//            R.id.Item1 -> {
-//                val InfoCiieActivity = Intent(this, InfoCIIEActivity::class.java)
-//                startActivity(InfoCiieActivity)
-//                true
-//            }
-//            R.id.Item2 -> {
-//                Toast.makeText(this,"Preferencias", Toast.LENGTH_SHORT).show()
-//                val preferencias: Intent = Intent(this, SettingsActivity::class.java)
-//                startActivity(preferencias)
-//                true
-//            }
-            R.id.Item3 -> {
+            R.id.Item1 -> {//Informacion de los CIIE Region 6
+                val infoCiieActivity = Intent(this, InfoCIIEActivity::class.java)
+                startActivity(infoCiieActivity)
+                true
+            }
+            R.id.Item2 -> {//Preferencias
+                Toast.makeText(this,"Preferencias", Toast.LENGTH_SHORT).show()
+                val preferencias: Intent = Intent(this, SettingsActivity::class.java)
+                startActivity(preferencias)
+                true
+            }
+            R.id.Item3 -> {//Formulario de inscripcion
+
+                Toast.makeText(this,"Inscripcion", Toast.LENGTH_SHORT).show()
+                val inscripcion: Intent = Intent(this, InscripcionActivity::class.java)
+                startActivity(inscripcion)
+                true
+
+//                val ListIntent: Intent = Intent(this, MainActivity::class.java).apply {
+//                    putExtra("email", email)
+//                    putExtra("provider", provider.name)
+//                }
+
+            }
+            R.id.Item4 -> {//Salir
                 Toast.makeText(this,"Salir", Toast.LENGTH_SHORT).show()
 
                 val prefs: SharedPreferences = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
@@ -95,6 +125,4 @@ class MainActivity : AppCompatActivity() {
             else -> false
         }
     }
-
-
 }

@@ -14,13 +14,11 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapte
         val fragment1 = DetailFragment1()
         fragment1.arguments = Bundle().apply {
             putString("name", _nombre)
-            putString("descripcion", _descripcion)
             putString("capacitador", _capacitador)
             putString("puntaje", _puntaje)
             putString("inicio", _inicio)
             putString("fin", _fin)
             putString("horario", _horario)
-            putString("requisitos", _requisitos)
         }
 
         val fragment2 = DetailFragment2()

@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <item
         android:id="@+id/Item1"
         android:title="@string/Item1" />
@@ -14,6 +13,11 @@
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/Item3"
+        android:title="@string/Item5"
+        android:icon="@android:drawable/ic_input_add"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/Item4"
         android:title="@string/Item6" />
 
 </menu>

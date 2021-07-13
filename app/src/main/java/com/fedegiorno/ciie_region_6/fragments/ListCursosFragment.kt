@@ -1,28 +1,25 @@
 package com.fedegiorno.ciie_region_6.fragments
 
 import android.content.ContentValues
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fedegiorno.ciie_region_6.R
+import androidx.navigation.findNavController
+import com.fedegiorno.ciie_region_6.adapters.CursoListAdapter
 import com.fedegiorno.ciie_region_6.entities.Curso
-import com.google.firebase.firestore.FirebaseFirestore
+import com.fedegiorno.ciie_region_6.R
+import com.fedegiorno.ciie_region_6.activities.MainActivity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.fedegiorno.ciie_region_6.adapters.CursoListAdapter
-import com.fedegiorno.ciie_region_6.fragments.ListViewModel
-
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class ListCursosFragment : Fragment() {
 
@@ -35,19 +32,14 @@ class ListCursosFragment : Fragment() {
     private lateinit var v: View
     private lateinit var recCursos: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
+    /* Es para definir el formato de la lista,
+    en este caso sus elementos estarán uno debajo del otro */
 
-    //var listaCursos: MutableList<Curso> = arrayListOf()
     var listaCursos: MutableList<Curso> = ArrayList<Curso>()
     private lateinit var cursosListAdapter: CursoListAdapter
 
-    //private lateinit var adapterFirestoreRecycler: FirestoreRecyclerAdapter<Curso, CursoListAdapter.CursoHolder>
-
-    // Access a Cloud Firestore instance from your Activity
-    //private val db = FirebaseFirestore.getInstance()
-
     // Access a Cloud Firestore instance from your Activity
     private val db = Firebase.firestore
-    //private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,7 +78,6 @@ class ListCursosFragment : Fragment() {
 //            db.collection("cursos").add(curso)
 //        }
 
-        //fillRecycler()
         traerDatosDB()
 
     }
@@ -102,7 +93,6 @@ class ListCursosFragment : Fragment() {
                     //Log.i("MIFIREBASE", "${document.id} -> ${document.data}")
                     listaCursos.add(document.toObject())
                 }
-                Log.i("MIFIREBASE", "listaCursos -> ${listaCursos.size.toString()}")
                 completarRecycler()
             }
             .addOnFailureListener { exception ->
@@ -113,11 +103,7 @@ class ListCursosFragment : Fragment() {
 
     private fun completarRecycler() {
 
-        // Configuracion del recyclerview
-        recCursos.setHasFixedSize(true)
-        linearLayoutManager= LinearLayoutManager(context)
-        recCursos.layoutManager = linearLayoutManager
-
+        Log.i("completarRecycler", "listaCursos -> ${listaCursos.size.toString()}")
         cursosListAdapter = CursoListAdapter(listaCursos, requireContext()) { pos ->
             onItemClick(pos)
         }
@@ -126,41 +112,11 @@ class ListCursosFragment : Fragment() {
         //Se pasa el adaptador al recycler, se muestra en pantalla la lista
     }
 
-
-//    private fun fillRecycler() {
-//        val rootRef = FirebaseFirestore.getInstance()
-//        val query = rootRef.collection("cursos")
-//
-//        val options = FirestoreRecyclerOptions.Builder<Curso>()
-//            .setQuery(query, Curso::class.java)
-//            .build()
-//
-//        adapterFirestoreRecycler = object :
-//            FirestoreRecyclerAdapter<Curso, CursoListAdapter.CursoHolder>(options) {
-//
-//            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CursoListAdapter.CursoHolder {
-//                val view = LayoutInflater.from(parent.context)
-//                    .inflate(R.layout.item_curso, parent, false)
-//                return CursoListAdapter.CursoHolder(view)
-//            }
-//
-//            override fun onBindViewHolder(holder: CursoListAdapter.CursoHolder, position: Int, model: Curso) {
-//                holder.setName(model.name)
-//            }
-//
-//            override fun onDataChanged() {
-//                super.onDataChanged()
-//            }
-//        }
-//        adapterFirestoreRecycler.startListening()
-//        recCursos.adapter = adapterFirestoreRecycler
-//    }
-
     private fun onItemClick(position: Int): Boolean {
 
         var name: String = listaCursos[position].name.toString()
         var descripcion: String = listaCursos[position].descripcion
-        var profesor: String = listaCursos[position].profesor
+        var capacitador: String = listaCursos[position].capacitador
         var puntaje: String = listaCursos[position].puntaje
         var inicio: String = listaCursos[position].inicio
         var fin: String = listaCursos[position].fin
@@ -168,6 +124,20 @@ class ListCursosFragment : Fragment() {
         var carga: String = listaCursos[position].carga
         var nivel: String = listaCursos[position].nivel
         var requisitos: String = listaCursos[position].requisitos
+
+
+        val actionCurso = ListCursosFragmentDirections.actionListCursosFragmentToContainerFragment(
+            name,
+            descripcion,
+            capacitador,
+            puntaje,
+            inicio,
+            fin,
+            horario,
+            carga,
+            nivel,
+            requisitos)
+        v.findNavController().navigate(actionCurso)
 
         return true
     }

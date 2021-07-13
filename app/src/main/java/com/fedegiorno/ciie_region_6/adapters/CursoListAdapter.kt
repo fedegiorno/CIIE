@@ -2,7 +2,6 @@ package com.fedegiorno.ciie_region_6.adapters
 
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,12 +14,17 @@ import com.bumptech.glide.Glide
 import com.fedegiorno.ciie_region_6.R
 import com.fedegiorno.ciie_region_6.entities.Curso
 
+
+/*
+* Recibe un array para llenar con los datos que necesita el recycler view
+* */
+
 class CursoListAdapter(
     private var cursosList: MutableList<Curso>,
     //Recibe la lista de Cursos (son los datos)
     val context:Context,
     val onItemClick: (Int) -> Boolean,
-    //Recibe un metodo que se ejecutara en el Fragmento
+    //Recibe un metodo LAMBDA que se ejecutara en el Fragmento, en este caso
 
     ) : RecyclerView.Adapter<CursoListAdapter.CursoHolder>() {
     //Extiende o implementa la clase RecyclerView.Adapter que trabaja con la clase inner CursoHolder
@@ -37,7 +41,11 @@ class CursoListAdapter(
     }
 
     override fun getItemCount(): Int {
-        return cursosList.size
+        return if (cursosList.size > 0) {
+            cursosList.size
+        } else {
+            0
+        }
     }
 
     fun setData(newData: ArrayList<Curso>) {
@@ -46,10 +54,12 @@ class CursoListAdapter(
     }
 
     override fun onBindViewHolder(holder: CursoHolder, position: Int) {
-        /* Uno la vista con los datos */
+        /* Uno la vista con los datos -
+        * Recibe el CursoHolder que es la representacion del item y la posicion del item dentro de
+        * la lista */
 
         holder.setName(cursosList[position].name)
-        holder.setProfe(cursosList[position].profesor)
+        holder.setProfe(cursosList[position].capacitador)
         holder.setNivel(cursosList[position].nivel)
 
         Glide
@@ -58,7 +68,8 @@ class CursoListAdapter(
             .centerInside()
             .into(holder.getImageView())
 
-        holder.getCardLayout().setOnLongClickListener {    //este metodo hay que terminarlo con true
+//        holder.getCardLayout().setOnLongClickListener {    //Si usamos este metodo hay que mantener apretado el item por mas tiempo para activarlo
+            holder.getCardLayout().setOnClickListener {    //este metodo hay que terminarlo con true
             onItemClick(position)
             true
         }
@@ -68,8 +79,10 @@ class CursoListAdapter(
         }
     }
 
-    class CursoHolder(v: View) : RecyclerView.ViewHolder(v) {       //se recibe una vista que es el item
-        //Esta clase interna del adapter que va a comunicarse o tomar las instancias del xml
+/* INNER CLASS */
+    class CursoHolder(v: View) : RecyclerView.ViewHolder(v) {
+        //se recibe una vista que es el item (en este caso item_curso.xml)
+        //Esta clase interna del adapter es la que va a comunicarse o tomar las instancias del xml
         //Acá se preveen todas las interacciones que puedan hacerse con el item
 
         private var view: View = v

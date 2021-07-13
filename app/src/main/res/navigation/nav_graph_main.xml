@@ -3,38 +3,39 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph_main2"
+    android:id="@+id/nav_graph_main"
     app:startDestination="@id/listCursosFragment">
-
     <fragment
         android:id="@+id/listCursosFragment"
         android:name="com.fedegiorno.ciie_region_6.fragments.ListCursosFragment"
         android:label="fragment_list_cursos"
         tools:layout="@layout/fragment_list_cursos" >
         <action
-            android:id="@+id/action_listCursosFragment_to_infoCIIEActivity"
-            app:destination="@id/infoCIIEActivity" />
-        <action
-            android:id="@+id/action_listCursosFragment_to_containerFragment"
-            app:destination="@id/containerFragment" />
-        <action
             android:id="@+id/action_listCursosFragment_to_settingsActivity"
             app:destination="@id/settingsActivity" />
         <action
-            android:id="@+id/action_listCursosFragment_to_dbCursosFragmentAlta"
-            app:destination="@id/dbCursosFragmentAlta" />
-        <action
-            android:id="@+id/action_listCursosFragment_to_dbCursosFragmentEliminar"
-            app:destination="@id/dbCursosFragmentEliminar" />
-        <action
-            android:id="@+id/action_listCursosFragment_to_dbCursosFragmentModificar"
-            app:destination="@id/dbCursosFragmentModificar" />
+            android:id="@+id/action_listCursosFragment_to_containerFragment"
+            app:destination="@id/containerFragment" />
     </fragment>
     <activity
-        android:id="@+id/infoCIIEActivity"
-        android:name="com.fedegiorno.ciie_region_6.activities.InfoCIIEActivity"
-        android:label="activity_infociie"
-        tools:layout="@layout/activity_infociie" />
+        android:id="@+id/settingsActivity"
+        android:name="com.fedegiorno.ciie_region_6.activities.SettingsActivity"
+        android:label="SettingsActivity" />
+    <fragment
+        android:id="@+id/detailFragment1"
+        android:name="com.fedegiorno.ciie_region_6.fragments.DetailFragment1"
+        android:label="fragment_detail1"
+        tools:layout="@layout/fragment_detail1" />
+    <fragment
+        android:id="@+id/detailFragment2"
+        android:name="com.fedegiorno.ciie_region_6.fragments.DetailFragment2"
+        android:label="fragment_detail2"
+        tools:layout="@layout/fragment_detail2" />
+    <fragment
+        android:id="@+id/detailFragment3"
+        android:name="com.fedegiorno.ciie_region_6.fragments.DetailFragment3"
+        android:label="fragment_detail3"
+        tools:layout="@layout/fragment_detail3" />
     <fragment
         android:id="@+id/containerFragment"
         android:name="com.fedegiorno.ciie_region_6.fragments.ContainerFragment"
@@ -70,56 +71,17 @@
         <argument
             android:name="requisitos"
             app:argType="string" />
-        <argument
-            android:name="id"
-            app:argType="integer" />
         <action
-            android:id="@+id/action_containerFragment_to_dbCursosFragmentEliminar"
-            app:destination="@id/dbCursosFragmentEliminar" />
-        <action
-            android:id="@+id/action_containerFragment_to_dbCursosFragmentModificar"
-            app:destination="@id/dbCursosFragmentModificar" />
+            android:id="@+id/action_containerFragment_to_inscripcionActivity"
+            app:destination="@id/inscripcionActivity" />
     </fragment>
-    <fragment
-        android:id="@+id/detailFragment1"
-        android:name="com.fedegiorno.ciie_region_6.fragments.DetailFragment1"
-        android:label="fragment_detail1"
-        tools:layout="@layout/fragment_detail1" />
-    <fragment
-        android:id="@+id/detailFragment2"
-        android:name="com.fedegiorno.ciie_region_6.fragments.DetailFragment2"
-        android:label="fragment_detail2"
-        tools:layout="@layout/fragment_detail2" />
-    <fragment
-        android:id="@+id/detailFragment3"
-        android:name="com.fedegiorno.ciie_region_6.fragments.DetailFragment3"
-        android:label="fragment_detail3"
-        tools:layout="@layout/fragment_detail3" />
     <activity
-        android:id="@+id/settingsActivity"
-        android:name="com.fedegiorno.ciie_region_6.activities.SettingsActivity"
-        android:label="SettingsActivity" />
-    <fragment
-        android:id="@+id/dbCursosFragmentAlta"
-        android:name="com.fedegiorno.ciie_region_6.fragments.DbCursosFragmentAlta"
-        android:label="fragment_db_cursos_alta"
-        tools:layout="@layout/fragment_db_cursos_alta" />
-    <fragment
-        android:id="@+id/dbCursosFragmentModificar"
-        android:name="com.fedegiorno.ciie_region_6.fragments.DbCursosFragmentModificar"
-        android:label="fragment_db_cursos_modificar"
-        tools:layout="@layout/fragment_db_cursos_modificar" >
+        android:id="@+id/inscripcionActivity"
+        android:name="com.fedegiorno.ciie_region_6.activities.InscripcionActivity"
+        android:label="activity_inscripcion"
+        tools:layout="@layout/activity_inscripcion" >
         <argument
-            android:name="id"
-            app:argType="integer" />
-    </fragment>
-    <fragment
-        android:id="@+id/dbCursosFragmentEliminar"
-        android:name="com.fedegiorno.ciie_region_6.fragments.DbCursosFragmentEliminar"
-        android:label="fragment_db_cursos_eliminar"
-        tools:layout="@layout/fragment_db_cursos_eliminar" >
-        <argument
-            android:name="id"
-            app:argType="integer" />
-    </fragment>
+            android:name="name"
+            app:argType="string" />
+    </activity>
 </navigation>

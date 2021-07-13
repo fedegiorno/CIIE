@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -18,15 +19,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.fedegiorno.ciie_region_6.entities.Docente
 import com.google.firebase.auth.FacebookAuthProvider
-
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 
 class LoginActivity : AppCompatActivity() {
 
@@ -44,7 +45,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
@@ -53,12 +53,11 @@ class LoginActivity : AppCompatActivity() {
         btnGoogle = findViewById(R.id.btnGoogle)
         btnFacebook = findViewById(R.id.btnFacebook)
         etxEmail = findViewById(R.id.etxEmail)
-        etxClave = findViewById(R.id.etxClave)
-        llyAutenticacion = findViewById(R.id.llyAutenticacion)
+        etxClave = findViewById(R.id.etxApellido)
+        llyAutenticacion = findViewById(R.id.llyEmail)
         //Setup
         setup()
         session()
-
     }
 
     override fun onStart() {
@@ -172,12 +171,57 @@ class LoginActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun showLista(email: String, provider: ProviderType) { //En caso de autenticación favorable vamos a MainActivity
-        val ListIntent: Intent = Intent(this, MainActivity::class.java).apply {
-            putExtra("email", email)
-            putExtra("provider", provider.name)
-        }
-        startActivity(ListIntent)
+    private fun showLista(email: String, provider: ProviderType) { //En caso de autenticación favorable vamos a RegisterActivity
+
+        var authIntent: Intent
+        val db = FirebaseFirestore.getInstance()
+
+        var maestro: Docente = Docente()
+        var docRef = db.collection("docentes").document(email)
+
+            docRef.get()
+                .addOnSuccessListener {dataSnapshot ->
+                    if (dataSnapshot != null) {
+                        maestro = dataSnapshot.toObject<Docente>()!!
+                        Log.d("****TEST", "DocumentSnapshot data: ${maestro.toString()}")
+
+                        if (maestro.provider.isNotEmpty() &&
+                            maestro.apellido.isNotEmpty() &&
+                            maestro.nombres.isNotEmpty() &&
+                            maestro.dni.isNotEmpty() &&
+                            maestro.nacimiento.isNotEmpty() &&
+                            maestro.cargo.isNotEmpty() &&
+                            maestro.escuela.isNotEmpty() &&
+                            maestro.direccion.isNotEmpty() &&
+                            maestro.telefono.isNotEmpty())
+                        {
+                            authIntent = Intent(this, MainActivity::class.java).apply {
+                                putExtra("email", email)
+                                putExtra("provider", provider.name)
+                            }
+                        } else {
+                            authIntent = Intent(this, RegisterActivity::class.java).apply {
+                                putExtra("email", email)
+                                putExtra("provider", provider.name)
+                                putExtra("apellido", maestro.apellido)
+                                putExtra("nombres", maestro.nombres)
+                                putExtra("dni", maestro.dni)
+                                putExtra("nacimiento", maestro.nacimiento)
+                                putExtra("cargo", maestro.cargo)
+                                putExtra("escuela", maestro.escuela)
+                                putExtra("direccion", maestro.direccion)
+                                putExtra("telefono", maestro.telefono)
+                            }
+                        }
+                        startActivity(authIntent)
+
+                    } else {
+                        Log.d("****TEST", "No such document")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                        Log.d("Test", "get failed with ", exception)
+                }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
