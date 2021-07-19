@@ -20,6 +20,12 @@ import com.fedegiorno.ciie_region_6.activities.MainActivity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 
 class ListCursosFragment : Fragment() {
 
@@ -35,7 +41,6 @@ class ListCursosFragment : Fragment() {
     /* Es para definir el formato de la lista,
     en este caso sus elementos estarán uno debajo del otro */
 
-    var listaCursos: MutableList<Curso> = ArrayList<Curso>()
     private lateinit var cursosListAdapter: CursoListAdapter
 
     // Access a Cloud Firestore instance from your Activity
@@ -70,6 +75,10 @@ class ListCursosFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
+        var listaCursos: MutableList<Curso> = ArrayList<Curso>()
+        val parentJob = Job()
+        val scope = CoroutineScope(Dispatchers.Main + parentJob)
+
 ////        Completo una lista de cursos inicial
 //        viewModel.initTestList()
 //
@@ -78,41 +87,36 @@ class ListCursosFragment : Fragment() {
 //            db.collection("cursos").add(curso)
 //        }
 
-        traerDatosDB()
+        scope.launch{
+            listaCursos = traerDatosDB(listaCursos)
 
+            Log.i("completarRecycler", "listaCursos -> ${listaCursos.size.toString()}")
+            cursosListAdapter = CursoListAdapter(listaCursos, requireContext()) { pos ->
+                onItemClick(listaCursos, pos)
+            }
+            recCursos.adapter = cursosListAdapter
+            //Se pasa el adaptador al recycler, se muestra en pantalla la lista
+        }
     }
 
-    private fun traerDatosDB() {
+    private suspend fun traerDatosDB(listaCursos: MutableList<Curso>):MutableList<Curso> {
 
         val cursosRef = db.collection("cursos")
+        val query = cursosRef
 
-        cursosRef
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    //Log.i("MIFIREBASE", "${document.id} -> ${document.data}")
-                    listaCursos.add(document.toObject())
-                }
-                completarRecycler()
+        try {
+            val data = query.get().await()
+            for (document in data) {
+                //Log.i("MIFIREBASE", "${document.id} -> ${document.data}")
+                listaCursos.add(document.toObject())
             }
-            .addOnFailureListener { exception ->
-                //Log.i("MIFIREBASE", "exception -> $exception")
-                Log.w(ContentValues.TAG, "Error getting documents: ", exception)
-            }
-    }
+        } catch (e: Exception) {
 
-    private fun completarRecycler() {
-
-        Log.i("completarRecycler", "listaCursos -> ${listaCursos.size.toString()}")
-        cursosListAdapter = CursoListAdapter(listaCursos, requireContext()) { pos ->
-            onItemClick(pos)
         }
-
-        recCursos.adapter = cursosListAdapter
-        //Se pasa el adaptador al recycler, se muestra en pantalla la lista
+        return listaCursos
     }
 
-    private fun onItemClick(position: Int): Boolean {
+    private fun onItemClick(listaCursos: MutableList<Curso> ,position: Int): Boolean {
 
         var name: String = listaCursos[position].name.toString()
         var descripcion: String = listaCursos[position].descripcion
