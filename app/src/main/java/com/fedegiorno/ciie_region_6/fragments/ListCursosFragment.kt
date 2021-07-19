@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,7 @@ import com.fedegiorno.ciie_region_6.activities.MainActivity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.itextpdf.text.pdf.PdfName.VIEW
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -37,6 +39,7 @@ class ListCursosFragment : Fragment() {
 
     private lateinit var v: View
     private lateinit var recCursos: RecyclerView
+    private lateinit var progressBar: ProgressBar
     private lateinit var linearLayoutManager: LinearLayoutManager
     /* Es para definir el formato de la lista,
     en este caso sus elementos estarán uno debajo del otro */
@@ -59,6 +62,8 @@ class ListCursosFragment : Fragment() {
 
         recCursos.setHasFixedSize(true)
         recCursos.layoutManager = LinearLayoutManager(context)
+
+        progressBar = v.findViewById(R.id.progressBar)
 
         return v
     }
@@ -87,6 +92,8 @@ class ListCursosFragment : Fragment() {
 //            db.collection("cursos").add(curso)
 //        }
 
+        progressBar.visibility = View.VISIBLE
+
         scope.launch{
             listaCursos = traerDatosDB(listaCursos)
 
@@ -96,6 +103,9 @@ class ListCursosFragment : Fragment() {
             }
             recCursos.adapter = cursosListAdapter
             //Se pasa el adaptador al recycler, se muestra en pantalla la lista
+
+            progressBar.visibility = View.GONE
+
         }
     }
 
