@@ -6,35 +6,20 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
-import androidx.core.view.forEach
 import com.fedegiorno.ciie_region_6.R
+import com.fedegiorno.ciie_region_6.databinding.ActivityRegisterBinding
 import com.fedegiorno.ciie_region_6.entities.Docente
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         title = "Formulario de Registro"
-
-        var etxEmail =findViewById<EditText>(R.id.etxEmail)
-        var etxApellido =findViewById<EditText>(R.id.etxApellido)
-        var etxNombres =findViewById<EditText>(R.id.etxNombres)
-        var etxDNI =findViewById<EditText>(R.id.etxDNI)
-        var etxNacimiento = findViewById<EditText>(R.id.etxNacimiento)
-        var spnCargo =findViewById<Spinner>(R.id.spnCargo)
-        var spnEscuela =findViewById<Spinner>(R.id.spnEscuela)
-        var etxDireccion = findViewById<EditText>(R.id.etxDireccion)
-        var etxTelefono = findViewById<EditText>(R.id.etxTelefono)
-
-        val btnAceptar = findViewById<Button>(R.id.btnAceptar)
-        val btnCancel = findViewById<Button>(R.id.btnCancel)
 
         val cargos = resources.getStringArray(R.array.cargos)
         val escuelas = resources.getStringArray(R.array.escuelas)
@@ -58,54 +43,54 @@ class RegisterActivity : AppCompatActivity() {
         var direccion: String? = bundle?.getString("direccion")
         var telefono: String? = bundle?.getString("telefono")
 
-        etxEmail.setText(emailIntent)
-        etxApellido.setText(apellido)
-        etxNombres.setText(nombres)
-        etxDNI.setText(dni)
-        etxNacimiento.setText(nacimiento)
-        etxDireccion.setText(direccion)
-        etxTelefono.setText(telefono)
+        binding.etxEmail.setText(emailIntent)
+        binding.etxApellido.setText(apellido)
+        binding.etxNombres.setText(nombres)
+        binding.etxDNI.setText(dni)
+        binding.etxNacimiento.setText(nacimiento)
+        binding.etxDireccion.setText(direccion)
+        binding.etxTelefono.setText(telefono)
 
-        spnCargo.adapter = adaptadorCargos
-        spnEscuela.adapter = adaptadorEscuelas
+        binding.spnCargo.adapter = adaptadorCargos
+        binding.spnEscuela.adapter = adaptadorEscuelas
 
         var itemCargoSeleccionado: Int = 0
 
-        for (i in 0 until spnCargo.count){
-            if (spnCargo.getItemAtPosition(i) == cargo){
+        for (i in 0 until binding.spnCargo.count){
+            if (binding.spnCargo.getItemAtPosition(i) == cargo){
                 itemCargoSeleccionado = i
             }
         }
 
         var itemEscuelaSeleccionada: Int = 0
 
-        for (i in 0 until spnEscuela.count){
-            if (spnEscuela.getItemAtPosition(i) == escuela){
+        for (i in 0 until binding.spnEscuela.count){
+            if (binding.spnEscuela.getItemAtPosition(i) == escuela){
                 itemEscuelaSeleccionada = i
             }
         }
 
-        spnCargo.setSelection(itemCargoSeleccionado)
-        spnEscuela.setSelection(itemEscuelaSeleccionada)
+        binding.spnCargo.setSelection(itemCargoSeleccionado)
+        binding.spnEscuela.setSelection(itemEscuelaSeleccionada)
 
-        etxNacimiento.setOnClickListener{showDatePickerDialog()}
+        binding.etxNacimiento.setOnClickListener{showDatePickerDialog()}
 
         // ********* BOTON ACEPTAR ***********
-        btnAceptar.setOnClickListener{
+        binding.btnAceptar.setOnClickListener{
             val db = FirebaseFirestore.getInstance()
 
             var docenteActual: Docente = Docente()
 
-            docenteActual.email = etxEmail.text.toString()
+            docenteActual.email = binding.etxEmail.text.toString()
             docenteActual.provider = providerIntent.toString()
-            docenteActual.apellido = etxApellido.text.toString()
-            docenteActual.nombres = etxNombres.text.toString()
-            docenteActual.dni = etxDNI.text.toString()
-            docenteActual.nacimiento = etxNacimiento.text.toString()
-            docenteActual.cargo = spnCargo.getSelectedItem().toString()
-            docenteActual.escuela = spnEscuela.getSelectedItem().toString()
-            docenteActual.direccion = etxDireccion.text.toString()
-            docenteActual.telefono = etxTelefono.text.toString()
+            docenteActual.apellido = binding.etxApellido.text.toString()
+            docenteActual.nombres = binding.etxNombres.text.toString()
+            docenteActual.dni = binding.etxDNI.text.toString()
+            docenteActual.nacimiento = binding.etxNacimiento.text.toString()
+            docenteActual.cargo = binding.spnCargo.getSelectedItem().toString()
+            docenteActual.escuela = binding.spnEscuela.getSelectedItem().toString()
+            docenteActual.direccion = binding.etxDireccion.text.toString()
+            docenteActual.telefono = binding.etxTelefono.text.toString()
 
             db.collection("docentes").document(docenteActual.email).set(docenteActual)
 
@@ -114,7 +99,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         // ********* BOTON CANCELAR ***********
-        btnCancel.setOnClickListener{
+        binding.btnCancel.setOnClickListener{
 
         }
     }
@@ -125,7 +110,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     fun onDateSelected(day: Int, month: Int, year: Int){
-        etxNacimiento.setText("$day/$month/$year")
+        binding.etxNacimiento.setText("$day/$month/$year")
     }
 
 }

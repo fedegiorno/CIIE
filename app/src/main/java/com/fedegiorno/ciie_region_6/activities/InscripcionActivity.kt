@@ -6,22 +6,17 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
 import com.fedegiorno.ciie_region_6.R
+import com.fedegiorno.ciie_region_6.databinding.ActivityInscripcionBinding
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 import com.itextpdf.text.Document
 import com.itextpdf.text.Paragraph
 import com.itextpdf.text.pdf.PdfWriter
-import kotlinx.android.synthetic.main.activity_inscripcion.*
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -33,9 +28,7 @@ class InscripcionActivity : AppCompatActivity() {
 
     private lateinit var emailprueba: String
 
-    private lateinit var etxDatosInscripcion: EditText
-    private lateinit var btnCancelar: Button
-    private lateinit var btnInscripcion: Button
+    private lateinit var binding: ActivityInscripcionBinding
 
     private lateinit var mFileName: String
     private lateinit var mFilePath: String
@@ -46,16 +39,12 @@ class InscripcionActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_inscripcion)
-
-        etxDatosInscripcion = findViewById(R.id.etxDatosInscripcion)
-        btnCancelar = findViewById(R.id.btnCancelar)
-        btnInscripcion = findViewById(R.id.btnInscripcion)
+        binding = ActivityInscripcionBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // [START storage_field_initialization]
         storage = Firebase.storage
         // [END storage_field_initialization]
-
     }
 
     override fun onStart() {
@@ -65,14 +54,14 @@ class InscripcionActivity : AppCompatActivity() {
 
         var textoInscripcionPDF: String = emailprueba
 
-        etxDatosInscripcion.setText(textoInscripcionPDF)
+        binding.etxDatosInscripcion.setText(textoInscripcionPDF)
 
-        btnInscripcion.setOnClickListener {
+        binding.btnInscripcion.setOnClickListener {
 
             crearFormPDF()
             guardarFormPDF()
         }
-        btnCancelar.setOnClickListener {
+        binding.btnCancelar.setOnClickListener {
 
         }
     }
@@ -124,7 +113,7 @@ class InscripcionActivity : AppCompatActivity() {
             PdfWriter.getInstance(mDoc, FileOutputStream(mFilePath))
             mDoc.open()
 
-            val data = etxDatosInscripcion.text.toString().trim()
+            val data = binding.etxDatosInscripcion.text.toString().trim()
             mDoc.addAuthor("CIIE-6")
             //mDoc.addHeader("HEADER","content")
             mDoc.addSubject("Formulario de inscripción a los cursos de los CIIEs de la Región 6 ")

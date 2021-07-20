@@ -15,8 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-
 import com.fedegiorno.ciie_region_6.R
+import com.fedegiorno.ciie_region_6.databinding.ActivityInfociieBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class InfoCIIEActivity : AppCompatActivity() {
@@ -26,16 +26,19 @@ class InfoCIIEActivity : AppCompatActivity() {
     private lateinit var navHostFragment : NavHostFragment
     /* BOTTOM NAVIGATION BAR */
 
+    private lateinit var binding: ActivityInfociieBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_infociie)
+        binding = ActivityInfociieBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         /* BOTTOM NAVIGATION BAR */
+        //revisar el navHostFragment en relacion con el ViewBinding
         navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_infociie) as NavHostFragment
-        bottomNavView = findViewById(R.id.bottom_bar)
+        bottomNavView = binding.bottomBar
         NavigationUI.setupWithNavController(bottomNavView, navHostFragment.navController)
         /* BOTTOM NAVIGATION BAR */
-
     }
 
     companion object

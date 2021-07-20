@@ -8,9 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
 import com.facebook.*
 import com.fedegiorno.ciie_region_6.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -25,7 +22,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.fedegiorno.ciie_region_6.databinding.ActivityLoginBinding
-import com.fedegiorno.ciie_region_6.databinding.ActivityMainBinding
 import com.fedegiorno.ciie_region_6.entities.Docente
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
