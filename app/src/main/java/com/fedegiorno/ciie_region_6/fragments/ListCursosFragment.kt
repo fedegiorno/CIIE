@@ -22,10 +22,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.itextpdf.text.pdf.PdfName.VIEW
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
 
@@ -92,12 +89,13 @@ class ListCursosFragment : Fragment() {
 //            db.collection("cursos").add(curso)
 //        }
 
-        progressBar.visibility = View.VISIBLE
-
         scope.launch{
+            progressBar.visibility = View.VISIBLE
+            //delay(5000)
+
             listaCursos = traerDatosDB(listaCursos)
 
-            Log.i("completarRecycler", "listaCursos -> ${listaCursos.size.toString()}")
+            Log.i("completarRecycler", "listaCursos -> ${listaCursos.size}")
             cursosListAdapter = CursoListAdapter(listaCursos, requireContext()) { pos ->
                 onItemClick(listaCursos, pos)
             }
@@ -105,7 +103,6 @@ class ListCursosFragment : Fragment() {
             //Se pasa el adaptador al recycler, se muestra en pantalla la lista
 
             progressBar.visibility = View.GONE
-
         }
     }
 

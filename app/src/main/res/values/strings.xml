@@ -38,11 +38,10 @@
 
     <!-- Items overflow -->
     <string name="Item1">Informacion CIIEs</string>
-    <string name="Item2">Altas Cursos</string>
-    <string name="Item3">Modificar Curso</string>
-    <string name="Item4">Eliminar Curso</string>
-    <string name="Item5">Inscripcion</string>
-    <string name="Item6">Salir</string>
+    <string name="Item2">Preferencias</string>
+    <string name="Item3">Inscripcion</string>
+    <string name="Item4">Modificar datos Docente</string>
+    <string name="Item5">Salir</string>
 
     <string name="Cancelar">Cancelar</string>
     <string name="Aceptar">Aceptar</string>

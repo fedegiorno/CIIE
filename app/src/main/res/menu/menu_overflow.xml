@@ -8,16 +8,19 @@
         android:title="@string/Item1" />
     <item
         android:id="@+id/Item2"
-        android:title="@string/Item5"
+        android:title="@string/Item2"
         android:icon="@drawable/ic_baseline_settings_24"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/Item3"
-        android:title="@string/Item5"
+        android:title="@string/Item3"
         android:icon="@android:drawable/ic_input_add"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/Item4"
-        android:title="@string/Item6" />
+        android:title="@string/Item4" />
+    <item
+        android:id="@+id/Item5"
+        android:title="@string/Item5" />
 
 </menu>

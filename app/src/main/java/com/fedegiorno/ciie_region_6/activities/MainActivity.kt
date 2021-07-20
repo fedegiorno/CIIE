@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.Item3 -> {//Formulario de inscripcion
 
-                Toast.makeText(this,"Inscripcion", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Inscripcion", Toast.LENGTH_SHORT).show()
                 val inscripcion: Intent = Intent(this, InscripcionActivity::class.java)
                 startActivity(inscripcion)
                 true
@@ -99,9 +99,16 @@ class MainActivity : AppCompatActivity() {
 //                    putExtra("email", email)
 //                    putExtra("provider", provider.name)
 //                }
+            }
+            R.id.Item4 -> {//Modificar datos docente
+
+                Toast.makeText(this,"Modificar datos del docente", Toast.LENGTH_SHORT).show()
+                val modificarDocente: Intent = Intent(this, RegisterActivity::class.java)
+                startActivity(modificarDocente)
+                true
 
             }
-            R.id.Item4 -> {//Salir
+            R.id.Item5 -> {//Salir
                 Toast.makeText(this,"Salir", Toast.LENGTH_SHORT).show()
 
                 val prefs: SharedPreferences = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)

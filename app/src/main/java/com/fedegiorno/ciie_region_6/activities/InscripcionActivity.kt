@@ -6,17 +6,22 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.fedegiorno.ciie_region_6.R
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 import com.itextpdf.text.Document
 import com.itextpdf.text.Paragraph
 import com.itextpdf.text.pdf.PdfWriter
+import kotlinx.android.synthetic.main.activity_inscripcion.*
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -51,7 +56,6 @@ class InscripcionActivity : AppCompatActivity() {
         storage = Firebase.storage
         // [END storage_field_initialization]
 
-
     }
 
     override fun onStart() {
@@ -63,18 +67,19 @@ class InscripcionActivity : AppCompatActivity() {
 
         etxDatosInscripcion.setText(textoInscripcionPDF)
 
-        btnInscripcion.setOnClickListener(){
+        btnInscripcion.setOnClickListener {
+
             crearFormPDF()
             guardarFormPDF()
         }
-        btnCancelar.setOnClickListener(){
+        btnCancelar.setOnClickListener {
 
         }
     }
 
     private fun guardarFormPDF() {
 
-        var fileUri:Uri = Uri.parse(mFilePath)
+        var fileUri: Uri = Uri.parse(mFilePath)
         // Create a storage reference from our app
         val storageRef = storage.reference
 
@@ -86,7 +91,8 @@ class InscripcionActivity : AppCompatActivity() {
 
 // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener {
-            Toast.makeText(this, "Se produjo un fallo al subir el formulario", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Se produjo un fallo al subir el formulario", Toast.LENGTH_LONG)
+                .show()
         }.addOnSuccessListener { taskSnapshot ->
             Toast.makeText(this, "El formulario se subio exitosamente", Toast.LENGTH_LONG).show()
         }

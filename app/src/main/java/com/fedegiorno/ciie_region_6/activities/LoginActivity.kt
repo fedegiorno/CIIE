@@ -24,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.fedegiorno.ciie_region_6.databinding.ActivityLoginBinding
+import com.fedegiorno.ciie_region_6.databinding.ActivityMainBinding
 import com.fedegiorno.ciie_region_6.entities.Docente
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
@@ -35,26 +37,30 @@ class LoginActivity : AppCompatActivity() {
 
     private val callbackManager = CallbackManager.Factory.create()
 
-    private lateinit var btnRegistrar: Button
-    private lateinit var btnIngresar: Button
-    private lateinit var btnGoogle: Button
-    private lateinit var btnFacebook: Button
-    private lateinit var etxEmail: EditText
-    private lateinit var etxClave: EditText
-    private lateinit var llyAutenticacion: LinearLayout
+//    private lateinit var btnRegistrar: Button
+//    private lateinit var btnIngresar: Button
+//    private lateinit var btnGoogle: Button
+//    private lateinit var btnFacebook: Button
+//    private lateinit var etxEmail: EditText
+//    private lateinit var etxClave: EditText
+//    private lateinit var llyAutenticacion: LinearLayout
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        btnRegistrar = findViewById(R.id.btnRegistrar)
-        btnIngresar = findViewById(R.id.btnIngresar)
-        btnGoogle = findViewById(R.id.btnGoogle)
-        btnFacebook = findViewById(R.id.btnFacebook)
-        etxEmail = findViewById(R.id.etxEmail)
-        etxClave = findViewById(R.id.etxApellido)
-        llyAutenticacion = findViewById(R.id.llyEmail)
+//        setContentView(R.layout.activity_login)
+
+//        btnRegistrar = findViewById(R.id.btnRegistrar)
+//        btnIngresar = findViewById(R.id.btnIngresar)
+//        btnGoogle = findViewById(R.id.btnGoogle)
+//        btnFacebook = findViewById(R.id.btnFacebook)
+//        etxEmail = findViewById(R.id.etxEmail)
+//        etxClave = findViewById(R.id.etxClave)
+//        llyAutenticacion = findViewById(R.id.llyEmail)
         //Setup
         setup()
         session()
@@ -63,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        llyAutenticacion.visibility = View.VISIBLE
+        binding.llyEmail.visibility = View.VISIBLE
     }
 
     private fun session() {
@@ -73,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
         val provider: String? = prefs.getString("provider", null)
 
         if (email != null && provider != null) {
-            llyAutenticacion.visibility = View.INVISIBLE
+            binding.llyEmail.visibility = View.INVISIBLE
             showLista(email, ProviderType.valueOf(provider))
         }
     }
@@ -81,12 +87,12 @@ class LoginActivity : AppCompatActivity() {
     private fun setup() {
         title = "Autenticacion"
 
-        btnRegistrar.setOnClickListener { //boton que permite el registro con email y contraseña
-            if (etxEmail.text.isNotEmpty() && etxClave.text.isNotEmpty()) {
+        binding.btnRegistrar.setOnClickListener { //boton que permite el registro con email y contraseña
+            if (binding.etxEmail.text.isNotEmpty() && binding.etxClave.text.isNotEmpty()) {
                 FirebaseAuth.getInstance()
                     .createUserWithEmailAndPassword(
-                        etxEmail.text.toString(),
-                        etxClave.text.toString()
+                        binding.etxEmail.text.toString(),
+                        binding.etxClave.text.toString()
                     ).addOnCompleteListener {
                         if (it.isSuccessful) {
                             showLista(it.result?.user?.email ?: "", ProviderType.BASIC)
@@ -97,12 +103,12 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        btnIngresar.setOnClickListener {//boton que permite ingresar con email y contraseña previamente registrados
-            if (etxEmail.text.isNotEmpty() && etxClave.text.isNotEmpty()) {
+        binding.btnIngresar.setOnClickListener {//boton que permite ingresar con email y contraseña previamente registrados
+            if (binding.etxEmail.text.isNotEmpty() && binding.etxClave.text.isNotEmpty()) {
                 FirebaseAuth.getInstance()
                     .signInWithEmailAndPassword(
-                        etxEmail.text.toString(),
-                        etxClave.text.toString()
+                        binding.etxEmail.text.toString(),
+                        binding.etxClave.text.toString()
                     ).addOnCompleteListener {
                         if (it.isSuccessful) {
                             showLista(it.result?.user?.email ?: "", ProviderType.BASIC)
@@ -113,7 +119,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        btnGoogle.setOnClickListener() {
+        binding.btnGoogle.setOnClickListener {
             //Configuracion
             val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -126,7 +132,7 @@ class LoginActivity : AppCompatActivity() {
             startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
         }
 
-        btnFacebook.setOnClickListener() {
+        binding.btnFacebook.setOnClickListener {
 
             LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
 
@@ -183,7 +189,7 @@ class LoginActivity : AppCompatActivity() {
                 .addOnSuccessListener {dataSnapshot ->
                     if (dataSnapshot != null && dataSnapshot.exists()) {
                         maestro = dataSnapshot.toObject<Docente>()!!
-                        Log.d("****TEST", "DocumentSnapshot data: ${maestro.toString()}")
+                        Log.d("****TEST", "DocumentSnapshot data: $maestro")
 
                         if (maestro.provider.isNotEmpty() &&
                             maestro.apellido.isNotEmpty() &&
